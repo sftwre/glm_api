@@ -1,0 +1,7 @@
+Instructions.MD
+*.ipynb
+*.csv
+*/__pycache__/*
+tests/.pytest_cache/*
+venv/*
+.idea/*
