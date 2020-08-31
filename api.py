@@ -35,9 +35,12 @@ def predictAd():
     params: features passed to the model
     """
 
-    #TODO validate request
-    #TODO handle batch calls
     req = request.get_json()
+
+    # validate request data
+    if not req:
+        res = dict(message="Bad request, no data was sent.")
+        return jsonify(res), 400
 
     # flag to determine if request is a batch call
     isBatch = False

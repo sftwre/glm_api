@@ -87,8 +87,8 @@ def test_five_rows(client, df_test):
 
 def test_all_rows(client, df_test):
     """
-    Tests that the /predict route can successfully accept five rows
-    of test data and return an array with the business_outcome, phat,
+    Tests that the /predict route can successfully accept all rows
+    of the test data and return an array with the business_outcome, phat,
     and params variables in JSON.
     :param client: connection to api
     """
@@ -110,3 +110,16 @@ def test_all_rows(client, df_test):
 
     for obj in jsonRes:
         assert_row(obj)
+
+def test_no_data(client):
+    """
+    Asserts API can handle invalid data
+    :param client: connection to api
+    :return:
+    """
+
+    rv = client.post('/predict', json='')
+
+    assert rv.status_code == 400
+
+    print("\n", rv.get_json())
