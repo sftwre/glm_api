@@ -18,14 +18,12 @@ model = LogitResults.load(f'{ROOT_DIR}/customer_segmentation_model.pkl')
 
 # load features of interest
 with open(f'{ROOT_DIR}/features.pkl', 'rb') as file:
-    features = pickle.load(file)
+    fInfo = pickle.load(file)
 
-# load scaler and imputer
-with open(f'{ROOT_DIR}/preprocess.pkl', 'rb') as file:
-    pre = pickle.load(file)
 
-std_scaler = pre['scaler']
-imputer = pre['imputer']
+std_scaler = fInfo['scaler']
+imputer = fInfo['imputer']
+features = fInfo['features']
 
 
 @app.route('/predict', methods=['POST'])
