@@ -92,13 +92,12 @@ def predictAd():
     test_imputed_std = test_imputed_std[features]
 
     # pass params through model and return result
-    df_preds = pd.DataFrame(model.predict(test_imputed_std.values), columns=['probs'])
-    df_preds['y'] = np.zeros(df_preds.shape[0], dtype=int)
-    df_preds.loc[df_preds.probs >= .75, 'y'] = 1
+    df_preds = pd.DataFrame(model.predict(test_imputed_std.values), columns=['phat'])
+    df_preds['business_outcome'] = np.zeros(df_preds.shape[0], dtype=int)
+    df_preds.loc[df_preds.phat >= .75, 'business_outcome'] = 1
+    df_preds['params'] = test_imputed_std.to_dict('records')
 
-    result = dict(business_outcome=int(df_preds.y.values[0]), phat=float(df_preds.probs.values[0]), params=df_test.to_dict('records'))
-
-    return jsonify(result)
+    return jsonify(df_preds.to_dict('records'))
 
 @app.route('/', methods=['GET'])
 def index():
