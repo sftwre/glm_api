@@ -85,7 +85,7 @@ def predictAd():
     df_preds['y'] = np.zeros(df_preds.shape[0], dtype=int)
     df_preds.loc[df_preds.probs >= .75, 'y'] = 1
 
-    result = dict(business_outcome=df_preds.y, phat=df_preds.probs, params=df_test.to_dict('records'))
+    result = dict(business_outcome=int(df_preds.y.values[0]), phat=float(df_preds.probs.values[0]), params=df_test.to_dict('records'))
 
     return jsonify(result)
 
