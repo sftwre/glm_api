@@ -32,8 +32,9 @@ def predictAd():
     """
 
     #TODO validate request
+    #TODO handle batch calls
     req = request.get_json()
-    df_test = pd.DataFrame(data=req)
+    df_test = pd.DataFrame(req, index=[0])
 
     # remove unwanted chars
     df_test['x12'] = df_test['x12'].str.replace('$', '')
