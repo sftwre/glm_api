@@ -67,9 +67,18 @@ def predictAd():
     dumb81 = pd.get_dummies(df_test['x81'], prefix='x81', prefix_sep='_', dummy_na=True)
     test_imputed = pd.concat([test_imputed, dumb81], axis=1, sort=False)
 
+    # set missing features to 0
+    fin = set(features)
+    fih = set(list(test_imputed.columns))
 
+    # missing features not in data
+    fm = list(fin - fih)
 
-    df_test = test_imputed_std[features]
+    test_imputed[fm] = 0
+
+    test_imputed[fm] = test_imputed[fm].astype(np.int)
+
+    df_test = test_imputed[features]
 
     # pass params through model and return result
     df_preds = pd.DataFrame(model.predict(df_test.values), columns=['probs'])
