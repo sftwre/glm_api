@@ -103,10 +103,3 @@ if __name__ == '__main__':
     # start app
     app.run(host=args.ip, port=args.port, debug=True)
 
-    # load model
-    model = LogitResults.load('customer_segmentation_model.pkl')
-
-    # load features of interest
-    with open('features.pkl', 'rb') as file:
-        features = pickle.load(file)
-
