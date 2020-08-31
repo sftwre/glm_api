@@ -5,8 +5,6 @@ import argparse
 import numpy as np
 import pandas as pd
 from flask import request, jsonify
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
 from statsmodels.discrete.discrete_model import LogitResults
 
 # define root directory
@@ -22,9 +20,13 @@ model = LogitResults.load(f'{ROOT_DIR}/customer_segmentation_model.pkl')
 with open(f'{ROOT_DIR}/features.pkl', 'rb') as file:
     features = pickle.load(file)
 
-# load feature means
-with open(f'{ROOT_DIR}/feature_means.pkl', 'rb') as file:
-    feature_means = pickle.load(file)
+# load scaler and imputer
+with open(f'{ROOT_DIR}/preprocess.pkl', 'rb') as file:
+    pre = pickle.load(file)
+
+std_scaler = pre['scaler']
+imputer = pre['imputer']
+
 
 @app.route('/predict', methods=['POST'])
 def predictAd():
@@ -48,18 +50,14 @@ def predictAd():
     df_test['x12'] = df_test['x12'].astype(float)
     df_test['x63'] = df_test['x63'].str.replace('%', '').astype(float)
 
-    # df_test = df_test[features]
-
     # mean fill NaN values
     df_no_obj = df_test.drop(columns=['x5', 'x31', 'x81', 'x82'])
 
-    imputer = SimpleImputer(missing_values=np.nan, strategy='constant', fill_value=0.0)
-    # TODO fix edge case where one row has a nan
-    test_imputed = pd.DataFrame(imputer.fit_transform(df_no_obj), columns=df_no_obj.columns)
+    df_fill = pd.DataFrame(data=imputer.statistics_.reshape(1, -1), columns=list(df_no_obj.columns))
 
-    # center and scale data
-    # std_scaler = StandardScaler()
-    # test_imputed_std = pd.DataFrame(std_scaler.fit_transform(test_imputed), columns=test_imputed.columns)
+    test_imputed = df_no_obj.fillna(df_fill)
+
+    test_imputed_std = pd.DataFrame(std_scaler.transform(test_imputed), columns=test_imputed.columns)
 
     # discretize necessary object columns and concat to df
     dumb5 = pd.get_dummies(df_test['x5'], prefix='x5', prefix_sep='_', dummy_na=True)
