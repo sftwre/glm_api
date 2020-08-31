@@ -1,3 +1,4 @@
+import os
 import flask
 import pickle
 import argparse
@@ -8,18 +9,21 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from statsmodels.discrete.discrete_model import LogitResults
 
+# define root directory
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
 # load model
-model = LogitResults.load('customer_segmentation_model.pkl')
+model = LogitResults.load(f'{ROOT_DIR}/customer_segmentation_model.pkl')
 
 # load features of interest
-with open('features.pkl', 'rb') as file:
+with open(f'{ROOT_DIR}/features.pkl', 'rb') as file:
     features = pickle.load(file)
 
 # load feature means
-with open('feature_means.pkl', 'rb') as file:
+with open(f'{ROOT_DIR}/feature_means.pkl', 'rb') as file:
     feature_means = pickle.load(file)
 
 @app.route('/predict', methods=['POST'])
