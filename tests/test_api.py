@@ -45,4 +45,8 @@ def test_one_row(client):
     assert 'phat' in jsonRes
     assert 'params' in jsonRes
 
+    assert type(jsonRes['business_outcome']) == int
+    assert type(jsonRes['phat']) == float
+    assert type(jsonRes['params'][0]) == dict
+
     # print(json)
