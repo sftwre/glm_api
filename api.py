@@ -97,7 +97,13 @@ def predictAd():
     df_preds.loc[df_preds.phat >= .75, 'business_outcome'] = 1
     df_preds['params'] = test_imputed_std.to_dict('records')
 
-    return jsonify(df_preds.to_dict('records'))
+    if not isBatch:
+        res = df_preds.iloc[0].to_dict()
+        res['business_outcome'] = int(res['business_outcome'])
+        res['phat'] = float(res['phat'])
+        return jsonify(res)
+    else:
+        return jsonify(df_preds.to_dict('records'))
 
 @app.route('/', methods=['GET'])
 def index():
