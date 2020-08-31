@@ -54,8 +54,8 @@ def predictAd():
     test_imputed = pd.DataFrame(imputer.fit_transform(df_no_obj), columns=df_no_obj.columns)
 
     # center and scale data
-    std_scaler = StandardScaler()
-    test_imputed_std = pd.DataFrame(std_scaler.fit_transform(test_imputed), columns=test_imputed.columns)
+    # std_scaler = StandardScaler()
+    # test_imputed_std = pd.DataFrame(std_scaler.fit_transform(test_imputed), columns=test_imputed.columns)
 
     # discretize necessary object columns and concat to df
     dumb5 = pd.get_dummies(df_test['x5'], drop_first=True, prefix='x5', prefix_sep='_', dummy_na=True)
