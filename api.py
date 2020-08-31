@@ -11,6 +11,17 @@ from statsmodels.discrete.discrete_model import LogitResults
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
+# load model
+model = LogitResults.load('customer_segmentation_model.pkl')
+
+# load features of interest
+with open('features.pkl', 'rb') as file:
+    features = pickle.load(file)
+
+# load feature means
+with open('feature_means.pkl', 'rb') as file:
+    feature_means = pickle.load(file)
+
 @app.route('/predict', methods=['POST'])
 def predictAd():
     """
