@@ -49,7 +49,8 @@ def predictAd():
     # mean fill NaN values
     df_no_obj = df_test.drop(columns=['x5', 'x31', 'x81', 'x82'])
 
-    imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
+    imputer = SimpleImputer(missing_values=np.nan, strategy='constant', fill_value=0.0)
+    # TODO fix edge case where one row has a nan
     test_imputed = pd.DataFrame(imputer.fit_transform(df_no_obj), columns=df_no_obj.columns)
 
     # center and scale data
