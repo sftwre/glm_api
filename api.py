@@ -58,14 +58,16 @@ def predictAd():
     # test_imputed_std = pd.DataFrame(std_scaler.fit_transform(test_imputed), columns=test_imputed.columns)
 
     # discretize necessary object columns and concat to df
-    dumb5 = pd.get_dummies(df_test['x5'], drop_first=True, prefix='x5', prefix_sep='_', dummy_na=True)
-    test_imputed_std = pd.concat([test_imputed_std, dumb5], axis=1, sort=False)
+    dumb5 = pd.get_dummies(df_test['x5'], prefix='x5', prefix_sep='_', dummy_na=True)
+    test_imputed = pd.concat([test_imputed, dumb5], axis=1, sort=False)
 
-    dumb31 = pd.get_dummies(df_test['x31'], drop_first=True, prefix='x31', prefix_sep='_', dummy_na=True)
-    test_imputed_std = pd.concat([test_imputed_std, dumb31], axis=1, sort=False)
+    dumb31 = pd.get_dummies(df_test['x31'], prefix='x31', prefix_sep='_', dummy_na=True)
+    test_imputed = pd.concat([test_imputed, dumb31], axis=1, sort=False)
 
-    dumb81 = pd.get_dummies(df_test['x81'], drop_first=True, prefix='x81', prefix_sep='_', dummy_na=True)
-    test_imputed_std = pd.concat([test_imputed_std, dumb81], axis=1, sort=False)
+    dumb81 = pd.get_dummies(df_test['x81'], prefix='x81', prefix_sep='_', dummy_na=True)
+    test_imputed = pd.concat([test_imputed, dumb81], axis=1, sort=False)
+
+
 
     df_test = test_imputed_std[features]
 
