@@ -32,13 +32,24 @@ def predictAd():
     Receives parameters to model and returns
     business outcome :int: - customer receives advertisement
     phat :float: - predicted probability of customer purchasing product
-    model input parameters
+    params: features passed to the model
     """
 
     #TODO validate request
     #TODO handle batch calls
     req = request.get_json()
-    df_test = pd.DataFrame(req, index=[0])
+
+    # flag to determine if request is a batch call
+    isBatch = False
+
+    # batch call
+    if type(req) == list:
+        index = list(range(len(req)))
+        isBatch = True
+    else:
+        index = [0]
+
+    df_test = pd.DataFrame(req, index=index)
 
     # remove unwanted chars
     df_test['x12'] = df_test['x12'].str.replace('$', '')
