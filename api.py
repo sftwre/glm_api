@@ -61,29 +61,29 @@ def predictAd():
 
     # discretize necessary object columns and concat to df
     dumb5 = pd.get_dummies(df_test['x5'], prefix='x5', prefix_sep='_', dummy_na=True)
-    test_imputed = pd.concat([test_imputed, dumb5], axis=1, sort=False)
+    test_imputed_std = pd.concat([test_imputed_std, dumb5], axis=1, sort=False)
 
     dumb31 = pd.get_dummies(df_test['x31'], prefix='x31', prefix_sep='_', dummy_na=True)
-    test_imputed = pd.concat([test_imputed, dumb31], axis=1, sort=False)
+    test_imputed_std = pd.concat([test_imputed_std, dumb31], axis=1, sort=False)
 
     dumb81 = pd.get_dummies(df_test['x81'], prefix='x81', prefix_sep='_', dummy_na=True)
-    test_imputed = pd.concat([test_imputed, dumb81], axis=1, sort=False)
+    test_imputed_std = pd.concat([test_imputed_std, dumb81], axis=1, sort=False)
 
     # set missing features to 0
     fin = set(features)
-    fih = set(list(test_imputed.columns))
+    fih = set(list(test_imputed_std.columns))
 
     # missing features not in data
     fm = list(fin - fih)
 
-    test_imputed[fm] = 0
+    test_imputed_std[fm] = 0
 
-    test_imputed[fm] = test_imputed[fm].astype(np.int)
+    test_imputed_std[fm] = test_imputed_std[fm].astype(np.int)
 
-    df_test = test_imputed[features]
+    test_imputed_std = test_imputed_std[features]
 
     # pass params through model and return result
-    df_preds = pd.DataFrame(model.predict(df_test.values), columns=['probs'])
+    df_preds = pd.DataFrame(model.predict(test_imputed_std.values), columns=['probs'])
     df_preds['y'] = np.zeros(df_preds.shape[0], dtype=int)
     df_preds.loc[df_preds.probs >= .75, 'y'] = 1
 
@@ -103,5 +103,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # start app
-    app.run(host=args.ip, port=args.port, debug=True)
+    app.run(host=args.ip, port=args.port)
 
