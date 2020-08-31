@@ -6,9 +6,12 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8080
+EXPOSE 5000
 
-COPY *.pkl .
+# only copy necessary files
+COPY customer_segmentation_model.pkl .
+
+COPY features.pkl .
 
 COPY exercise_26_test.csv .
 
@@ -16,4 +19,4 @@ COPY api.py .
 
 COPY tests .
 
-CMD [ "python", "./api.py", '-ip localhost', '-port 8080']
+CMD [ "python", "./api.py" ]

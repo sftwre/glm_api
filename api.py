@@ -11,7 +11,6 @@ from statsmodels.discrete.discrete_model import LogitResults
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = flask.Flask(__name__)
-app.config['DEBUG'] = True
 
 # load model
 model = LogitResults.load(f'{ROOT_DIR}/customer_segmentation_model.pkl')
@@ -114,11 +113,7 @@ def index():
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-ip', type=str, required=True, help='ip address of device')
-    parser.add_argument('-port', type=int, required=True, help='port number to serve api on')
-    args = parser.parse_args()
-
+    
     # start app
-    app.run(host=args.ip, port=args.port)
+    app.run(host='0.0.0.0')
 
