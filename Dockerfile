@@ -13,10 +13,6 @@ COPY customer_segmentation_model.pkl .
 
 COPY features.pkl .
 
-COPY exercise_26_test.csv .
-
 COPY api.py .
-
-COPY tests .
 
 CMD [ "python", "./api.py" ]
